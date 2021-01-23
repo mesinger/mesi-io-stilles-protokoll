@@ -1,0 +1,34 @@
+﻿@page
+@model Mesi.Io.SilentProtocol.WebApp.Pages.NewModel
+
+<div>
+    <h1 class="display-4 text-center">
+        Einen neuen Eintrag erstellen
+    </h1>
+    
+    <div>
+        <form method="post" class="mb-2">
+            <div class="mb-3">
+                <input type="text" asp-for="Suspect" placeholder="Beschuldigter" class="form-control">
+                <span asp-validation-for="Suspect" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <textarea type="text" asp-for="Entry" rows="3" placeholder="Eintrag..." class="form-control"></textarea>
+                <span asp-validation-for="Entry" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="text" asp-for="TimeStamp" placeholder="Beschreibung des Zeitpunkts" class="form-control">
+                <span asp-validation-for="TimeStamp" class="text-danger"></span>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Hinzufügen</button>
+            </div>
+        </form>
+        @if (Model.SuccessfullyAdded)
+        {
+            <p class="text-muted">
+                Dein Eintrag wurde gespeichtert.
+            </p>
+        }
+    </div>
+</div>

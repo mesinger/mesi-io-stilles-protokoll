@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  silent-protocol-app:
+    build: .
+    ports:
+      - ${MESI_IO_SILENT_PROTOCOL_Port}:5000
+    environment:
+      - MESI_IO_SILENT_PROTOCOL_ConnectionStrings__SilentProtocolDb
+      - MESI_IO_SILENT_PROTOCOL_SilentProtocol__Password

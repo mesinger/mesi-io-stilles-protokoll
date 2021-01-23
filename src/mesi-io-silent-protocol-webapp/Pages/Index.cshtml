@@ -1,0 +1,45 @@
+﻿@page
+@model IndexModel
+
+<div class="text-center">
+    <div class="mb-5">
+        <h1 class="display-4">Stilles Protokoll</h1>
+    </div>
+
+    @await Component.InvokeAsync("Navigator", new {page = Model.PageNumber, ShowNextButton = Model.ShowNextButton})
+
+    <div class="container">
+        <div class="row mb-2">
+            <div class="col-2 text-start">
+                Beschuldigter
+            </div>
+            <div class="col-8 text-start">
+                Eintrag
+            </div>
+            <div class="col-2 text-start">
+                Zeitpunkt
+            </div>
+        </div>
+
+        @{
+            var count = 0;
+        }
+
+        @foreach (var entry in Model.Entries)
+        {
+            <div class="row mb-1 p-1 @(count++ % 2 == 0 ? "bg-light" : "")">
+                <div class="col-2 text-start">
+                    @entry.Suspect
+                </div>
+                <div class="col-8 text-start">
+                    @entry.Entry
+                </div>
+                <div class="col-2 text-start">
+                    @entry.TimeStamp
+                </div>
+            </div>
+        }
+    </div>
+
+    @await Component.InvokeAsync("Navigator", new {page = Model.PageNumber, ShowNextButton = Model.ShowNextButton})
+</div>

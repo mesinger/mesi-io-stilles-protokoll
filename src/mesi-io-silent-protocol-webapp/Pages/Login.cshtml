@@ -1,0 +1,15 @@
+﻿@page
+@model Mesi.Io.SilentProtocol.WebApp.Pages.LoginModel
+
+<div>
+    <form method="post">
+        <div class="mb-3">
+            <input type="password" asp-for="Password" placeholder="Passwort" class="form-control">
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <input type="text" asp-for="ReturnUrl" hidden>
+        <div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+    </form>
+</div>
