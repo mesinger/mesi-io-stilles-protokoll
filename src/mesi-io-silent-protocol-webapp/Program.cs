@@ -33,7 +33,7 @@ namespace Mesi.Io.SilentProtocol.WebApp
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(config => config.AddEnvironmentVariables("MESI_IO_SILENT_PROTOCOL_"))
+                .ConfigureAppConfiguration(config => config.AddEnvironmentVariables("MESI_SILENT_PROTOCOL_"))
                 .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
     }
 }

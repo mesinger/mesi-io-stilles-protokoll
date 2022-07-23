@@ -1,0 +1,23 @@
+---
+- hosts: aws-ireland
+
+  tasks:
+    - name: clean
+      shell: rm -rf ~/deployments/stilles-protokol && mkdir -p ~/deployments/stilles-protokol
+      
+    - name: copy deployment artifacts
+      copy:
+        src: "stilles-protokol.tar.gz"
+        dest: "~/deployments/stilles-protokol"
+    
+    - name: extract deployment
+      shell: tar xzf ~/deployments/stilles-protokol/stilles-protokol.tar.gz -C ~/deployments/stilles-protokol
+    
+    - name: load docker image
+      shell: docker load -i ~/deployments/stilles-protokol/image.tar
+
+    - name: stop deployment
+      shell: docker kill stilles-protokol || true
+
+    - name: run app
+      shell: docker run --rm -d -p 40103:80 --name stilles-protokol mesi/stilles-protokol

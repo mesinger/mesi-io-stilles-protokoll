@@ -1,4 +1,10 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM mcr.microsoft.com/dotnet/sdk:6.0 as build
+WORKDIR /source
+
+COPY . .
+RUN dotnet publish -c release -o /app
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 as run
 WORKDIR /app
-COPY ./publish .
-ENTRYPOINT ["dotnet", "/app/silent-protocol.dll", "--urls", "http://0.0.0.0:5000"]
+COPY --from=build /app .
+ENTRYPOINT dotnet silent-protocol.dll

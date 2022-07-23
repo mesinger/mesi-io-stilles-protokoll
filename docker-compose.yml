@@ -1,10 +1,13 @@
 version: '3.7'
 
 services:
-  silent-protocol-app:
-    build: .
+  postgres:
+    image: postgres:14
+    container_name: silent-protocol-db
     ports:
-      - ${MESI_IO_SILENT_PROTOCOL_Port}:5000
+      - "5432:5432"
     environment:
-      - MESI_IO_SILENT_PROTOCOL_ConnectionStrings__SilentProtocolDb
-      - MESI_IO_SILENT_PROTOCOL_SilentProtocol__Password
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "silent_protocol"
+      
