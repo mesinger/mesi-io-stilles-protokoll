@@ -31,5 +31,15 @@ namespace Mesi.Io.SilentProtocol.Infrastructure.Db
             await _dbContext.Entries.AddAsync(entry);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task Update(SilentProtocolEntry entry)
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public Task<SilentProtocolEntry> GetById(string id)
+        {
+            return _dbContext.Entries.Where(entry => entry.Id == id).SingleOrDefaultAsync();
+        }
     }
 }

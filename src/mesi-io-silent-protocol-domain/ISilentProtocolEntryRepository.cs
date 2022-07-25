@@ -22,5 +22,19 @@ namespace Mesi.Io.SilentProtocol.Domain
         /// <param name="entry"></param>
         /// <returns></returns>
         Task Save(SilentProtocolEntry entry);
+
+        /// <summary>
+        /// Updates an existing <see cref="SilentProtocolEntry"/>
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <returns></returns>
+        Task Update(SilentProtocolEntry entry);
+
+        /// <summary>
+        /// Returns an entry identified by <paramref name="id"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<SilentProtocolEntry?> GetById(string id);
     }
 }

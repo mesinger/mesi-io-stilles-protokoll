@@ -6,18 +6,21 @@
         <h1 class="display-4">Stilles Protokoll</h1>
     </div>
 
-    @await Component.InvokeAsync("Navigator", new {page = Model.PageNumber, ShowNextButton = Model.ShowNextButton})
+    @await Component.InvokeAsync("Navigator", new { page = Model.PageNumber, ShowNextButton = Model.ShowNextButton })
 
     <div class="container">
         <div class="row mb-2">
             <div class="col-2 text-start">
                 Beschuldigter
             </div>
-            <div class="col-8 text-start">
+            <div class="col-6 text-start">
                 Eintrag
             </div>
             <div class="col-2 text-start">
                 Zeitpunkt
+            </div>
+            <div class="col-2">
+                
             </div>
         </div>
 
@@ -31,15 +34,19 @@
                 <div class="col-2 text-start">
                     @entry.Suspect
                 </div>
-                <div class="col-8 text-start">
+                <div class="col-6 text-start">
                     @entry.Entry
                 </div>
                 <div class="col-2 text-start">
                     @entry.TimeStamp
                 </div>
+                <div class="col-2 text-start">
+                    @* <a asp-page="Edit" asp-route-id="@entry.Id">editieren</a> *@
+                    editieren
+                </div>
             </div>
         }
     </div>
 
-    @await Component.InvokeAsync("Navigator", new {page = Model.PageNumber, ShowNextButton = Model.ShowNextButton})
+    @await Component.InvokeAsync("Navigator", new { page = Model.PageNumber, ShowNextButton = Model.ShowNextButton })
 </div>

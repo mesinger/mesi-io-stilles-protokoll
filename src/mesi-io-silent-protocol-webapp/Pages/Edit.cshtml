@@ -1,0 +1,31 @@
+@page
+@model Mesi.Io.SilentProtocol.WebApp.Pages.EditModel
+
+<div>
+    <h1 class="display-4 text-center">
+        Einen neuen Eintrag erstellen
+    </h1>
+
+    <div>
+        <form method="post" class="mb-2">
+            <div class="mb-3">
+                <input type="text" asp-for="Suspect" value="@Model.Suspect" placeholder="Beschuldigter" class="form-control">
+                <span asp-validation-for="Suspect" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <textarea type="text" asp-for="Entry" rows="3" placeholder="Eintrag..." class="form-control">
+                    @Model.Entry
+                </textarea>
+                <span asp-validation-for="Entry" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="text" asp-for="TimeStamp" value="@Model.TimeStamp" placeholder="Beschreibung des Zeitpunkts" class="form-control">
+                <span asp-validation-for="TimeStamp" class="text-danger"></span>
+            </div>
+            <input asp-for="Id"/>
+            <div>
+                <button type="submit" class="btn btn-primary">Editieren</button>
+            </div>
+        </form>
+    </div>
+</div>
