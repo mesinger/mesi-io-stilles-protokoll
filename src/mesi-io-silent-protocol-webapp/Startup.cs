@@ -40,10 +40,13 @@ namespace Mesi.Io.SilentProtocol.WebApp
                 });
 
             services.Configure<SilentProtocolOptions>(Configuration.GetSection("SilentProtocol"));
+            services.Configure<DiscordOptions>(Configuration.GetSection("Discord"));
 
             services.AddDbContext<SilentProtocolDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("SilentProtocolDb")));
 
+            services.AddHttpClient();
+            
             services.AddScoped<ISilentProtocolEntryRepository, SilentProtocolEntryRepository>();
             services.AddScoped<ISilentProtocolEntryFactory, SilentProtocolEntryFactory>();
 

@@ -29,3 +29,5 @@
         env:
           MESI_SILENT_PROTOCOL_SilentProtocol__Password: "${MESI_SILENT_PROTOCOL_SilentProtocol__Password}"
           MESI_SILENT_PROTOCOL_ConnectionStrings__SilentProtocolDb: "${MESI_SILENT_PROTOCOL_ConnectionStrings__SilentProtocolDb}"
+          MESI_SILENT_PROTOCOL_Discord__WebhookId: "${MESI_SILENT_PROTOCOL_Discord__WebhookId}"
+          MESI_SILENT_PROTOCOL_Discord__WebhookToken: "${MESI_SILENT_PROTOCOL_Discord__WebhookToken}"
