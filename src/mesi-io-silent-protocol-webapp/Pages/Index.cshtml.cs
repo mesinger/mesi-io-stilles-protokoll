@@ -39,10 +39,5 @@ namespace Mesi.Io.SilentProtocol.WebApp.Pages
 
             return Page();
         }
-
-        public async Task<IActionResult> OnEdit(string id)
-        {
-            return BadRequest();
-        }
     }
 }

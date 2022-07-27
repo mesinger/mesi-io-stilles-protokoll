@@ -1,3 +1,4 @@
+using System.Data;
 using Mesi.Io.SilentProtocol.Application;
 using Mesi.Io.SilentProtocol.Domain;
 using Mesi.Io.SilentProtocol.Infrastructure.Db;
@@ -5,10 +6,10 @@ using Mesi.Io.SilentProtocol.Options;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Npgsql;
 
 namespace Mesi.Io.SilentProtocol.WebApp
 {
@@ -42,12 +43,12 @@ namespace Mesi.Io.SilentProtocol.WebApp
             services.Configure<SilentProtocolOptions>(Configuration.GetSection("SilentProtocol"));
             services.Configure<DiscordOptions>(Configuration.GetSection("Discord"));
 
-            services.AddDbContext<SilentProtocolDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("SilentProtocolDb")));
+            services.AddTransient<IDbConnection>(db => new NpgsqlConnection(
+                Configuration.GetConnectionString("SilentProtocolDb")));
 
             services.AddHttpClient();
             
-            services.AddScoped<ISilentProtocolEntryRepository, SilentProtocolEntryRepository>();
+            services.AddScoped<ISilentProtocolEntryRepository, DapperSilentProtocolEntryRepository>();
             services.AddScoped<ISilentProtocolEntryFactory, SilentProtocolEntryFactory>();
 
             services.AddScoped<IGetSilentProtocolEntriesPaged, SilentProtocolApplicationService>();

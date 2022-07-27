@@ -15,7 +15,7 @@ public class EditModel : PageModel
         _entryRepository = entryRepository;
     }
     
-    private SilentProtocolEntry _protocolEntry;
+    private SilentProtocolEntry? _protocolEntry;
 
     public async Task<IActionResult> OnGet(string id)
     {
@@ -38,24 +38,24 @@ public class EditModel : PageModel
     [MaxLength(50, ErrorMessage = "Der Name des Beschuldigten darf max. 50 Zeichen lang sein.")]
     [MinLength(3, ErrorMessage = "Der Name des Beschuldigten muss min. 3 Zeichen lang sein.")]
     [BindProperty]
-    public string Suspect { get; set; }
-    
+    public string Suspect { get; set; } = null!;
+
     [Required(ErrorMessage = "Bitte gib einen Eintrag ein.")]
     [MaxLength(1800, ErrorMessage = "Der Eintrag ist zu lang.")]
     [MinLength(3, ErrorMessage = "Der Eintrag ist zu kurz.")]
     [BindProperty]
-    public string Entry { get; set; }
-    
+    public string Entry { get; set; } = null!;
+
     [Required(ErrorMessage = "Bitte gib eine Beschreibung des Zeitpunkts ein.")]
     [MaxLength(50, ErrorMessage = "Die Beschreibung des Zeitpunkts ist zu lang.")]
     [MinLength(3, ErrorMessage = "Die Beschreibung des Zeitpunkts ist zu kurz.")]
     [BindProperty]
-    public string TimeStamp { get; set; }
+    public string TimeStamp { get; set; } = null!;
 
     [Required]
     [HiddenInput]
     [BindProperty]
-    public string Id { get; set; }
+    public string Id { get; set; } = null!;
 
     public async Task<IActionResult> OnPost()
     {

@@ -10,4 +10,25 @@ services:
       POSTGRES_PASSWORD: "password"
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "silent_protocol"
+  
+  dbmate-bootstrap:
+    image: amacneil/dbmate:1.15
+    container_name: dbmate
+    command: --wait migrate
+    
+    volumes:
+      - ./ci/local/db:/db/migrations
+    
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/silent_protocol?sslmode=disable
+      
+    depends_on:
+      - postgres
+  
+  dbmate:
+    image: amacneil/dbmate:1.15
+    container_name: dbmate-dev
+      
+    volumes:
+      - ./ci/local/db:/db/migrations
       
