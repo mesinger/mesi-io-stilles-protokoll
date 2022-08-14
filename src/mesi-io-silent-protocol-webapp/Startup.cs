@@ -1,9 +1,9 @@
 using System.Data;
+using System.Net.Http;
 using Mesi.Io.SilentProtocol.Application;
 using Mesi.Io.SilentProtocol.Domain;
 using Mesi.Io.SilentProtocol.Infrastructure.Db;
 using Mesi.Io.SilentProtocol.Options;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,18 +26,40 @@ namespace Mesi.Io.SilentProtocol.WebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
             services.AddRazorPages(options =>
             {
                 options.Conventions.AuthorizePage("/Index");
                 options.Conventions.AuthorizePage("/New");
             });
-            
+
             services.AddRouting(options => options.LowercaseUrls = true);
             
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, config =>
+            services.AddAuthentication(options =>
                 {
-                    config.LoginPath = "/login";
+                    options.DefaultScheme = "Cookies";
+                    options.DefaultChallengeScheme = "oidc";
+                })
+                .AddCookie("Cookies")
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.Authority = Configuration.GetValue<string>("Oidc:Authority");
+            
+                    options.ClientId = Configuration.GetValue<string>("Oidc:ClientId");
+                    options.ClientSecret = Configuration.GetValue<string>("Oidc:Secret");
+                    options.ResponseType = "code";
+            
+                    options.SaveTokens = true;
+            
+                    options.Scope.Clear();
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    options.Scope.Add("email");
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    
+                    var handler = new HttpClientHandler();
+                    handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                    options.BackchannelHttpHandler = handler;
                 });
 
             services.Configure<SilentProtocolOptions>(Configuration.GetSection("SilentProtocol"));
@@ -47,6 +69,7 @@ namespace Mesi.Io.SilentProtocol.WebApp
                 Configuration.GetConnectionString("SilentProtocolDb")));
 
             services.AddHttpClient();
+            services.AddHttpContextAccessor();
             
             services.AddScoped<ISilentProtocolEntryRepository, DapperSilentProtocolEntryRepository>();
             services.AddScoped<ISilentProtocolEntryFactory, SilentProtocolEntryFactory>();
@@ -60,6 +83,7 @@ namespace Mesi.Io.SilentProtocol.WebApp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseHttpsRedirection();
             }
             else
             {
@@ -72,7 +96,11 @@ namespace Mesi.Io.SilentProtocol.WebApp
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapRazorPages(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
+            });
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Mesi.Io.SilentProtocol.Application;
 using Mesi.Io.SilentProtocol.Options;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
@@ -15,12 +16,14 @@ namespace Mesi.Io.SilentProtocol.WebApp.Pages
     {
         private readonly IAddSilentProtocolEntry _addSilentProtocolEntry;
         private readonly HttpClient _httpClient;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly DiscordOptions _discord;
 
-        public NewModel(IAddSilentProtocolEntry addSilentProtocolEntry, HttpClient httpClient, IOptions<DiscordOptions> discord)
+        public NewModel(IAddSilentProtocolEntry addSilentProtocolEntry, HttpClient httpClient, IHttpContextAccessor httpContextAccessor, IOptions<DiscordOptions> discord)
         {
             _addSilentProtocolEntry = addSilentProtocolEntry;
             _httpClient = httpClient;
+            _httpContextAccessor = httpContextAccessor;
             _discord = discord.Value;
         }
         
@@ -52,6 +55,12 @@ namespace Mesi.Io.SilentProtocol.WebApp.Pages
             {
                 return Page();
             }
+            
+            var user = _httpContextAccessor.HttpContext?.User;
+            if (user is null)
+            {
+                return Unauthorized();
+            }
 
             var createdEntry = await _addSilentProtocolEntry.Add(new(Suspect, Entry, TimeStamp));
 
@@ -65,7 +74,7 @@ namespace Mesi.Io.SilentProtocol.WebApp.Pages
             {
                 new("content", $"Neuer Eintrag für **{createdEntry.Suspect}**```{createdEntry.Entry}```")
             };
-            // nvc.Add(new KeyValuePair<string, string>("Input2", "TEST2"));
+
             var req = new HttpRequestMessage(HttpMethod.Post, $"https://discord.com/api/webhooks/{_discord.WebhookId}/{_discord.WebhookToken}") { Content = new FormUrlEncodedContent(nvc) };
             await _httpClient.SendAsync(req);
             
