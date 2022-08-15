@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Mesi.Io.SilentProtocol.Application;
 using Mesi.Io.SilentProtocol.Options;
+using Mesi.Io.SilentProtocol.WebApp.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -55,14 +58,14 @@ namespace Mesi.Io.SilentProtocol.WebApp.Pages
             {
                 return Page();
             }
-            
-            var user = _httpContextAccessor.HttpContext?.User;
-            if (user is null)
+
+            var reporter = _httpContextAccessor.HttpContext.GetUserName();
+            if (reporter is null)
             {
                 return Unauthorized();
             }
 
-            var createdEntry = await _addSilentProtocolEntry.Add(new(Suspect, Entry, TimeStamp));
+            var createdEntry = await _addSilentProtocolEntry.Add(new(Suspect, Entry, TimeStamp, reporter));
 
             if (createdEntry == null)
             {

@@ -15,6 +15,7 @@ public class SilentProtocolEntryDataModel
     public string entry { get; set; } = null!;
     public string time_stamp { get; set; } = null!;
     public DateTime created_at_utc { get; set; }
+    public string reporter { get; set; }
 }
 
 public class DapperSilentProtocolEntryRepository : ISilentProtocolEntryRepository
@@ -29,19 +30,20 @@ public class DapperSilentProtocolEntryRepository : ISilentProtocolEntryRepositor
     public async Task<IEnumerable<SilentProtocolEntry>> GetSliced(int skip, int take)
     {
         var entries = await _dbConnection.QueryAsync<SilentProtocolEntryDataModel>("select * from t_silent_protocol_entries order by created_at_utc desc");
-        return entries.Skip(skip).Take(take).Select(data => new SilentProtocolEntry(data.id, data.suspect, data.entry, data.time_stamp, data.created_at_utc));
+        return entries.Skip(skip).Take(take).Select(data => new SilentProtocolEntry(data.id, data.suspect, data.entry, data.time_stamp, data.created_at_utc, data.reporter));
     }
 
     public async Task Save(SilentProtocolEntry entry)
     {
         await _dbConnection.ExecuteAsync(
-            "insert into t_silent_protocol_entries values (@id, @suspect, @entry, @timeStamp, @createdAt)", new
+            "insert into t_silent_protocol_entries values (@id, @suspect, @entry, @timeStamp, @createdAt, @reporter)", new
             {
                 id = entry.Id,
                 suspect = entry.Suspect,
                 entry = entry.Entry,
                 timeStamp = entry.TimeStamp,
-                createdAt = entry.CreatedAtUtc
+                createdAt = entry.CreatedAtUtc,
+                reporter = entry.Reporter,
             });
     }
 
@@ -64,7 +66,7 @@ public class DapperSilentProtocolEntryRepository : ISilentProtocolEntryRepositor
             "select * from t_silent_protocol_entries where id = @id", new { id });
 
         return entry is not null
-            ? new SilentProtocolEntry(entry.id, entry.suspect, entry.entry, entry.time_stamp, entry.created_at_utc)
+            ? new SilentProtocolEntry(entry.id, entry.suspect, entry.entry, entry.time_stamp, entry.created_at_utc, entry.reporter)
             : null;
     }
 }

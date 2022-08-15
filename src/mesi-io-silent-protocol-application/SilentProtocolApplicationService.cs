@@ -41,7 +41,7 @@ namespace Mesi.Io.SilentProtocol.Application
         {
             try
             {
-                var newEntry = _silentProtocolEntryFactory.Create(data.Suspect, data.Entry, data.TimeStamp);
+                var newEntry = _silentProtocolEntryFactory.Create(data.Suspect, data.Entry, data.TimeStamp, data.Reporter);
                 await _silentProtocolEntryRepository.Save(newEntry);
                 return newEntry;
             }

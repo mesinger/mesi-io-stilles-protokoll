@@ -6,7 +6,7 @@ namespace Mesi.Io.SilentProtocol.Domain
     public class SilentProtocolEntryFactory : ISilentProtocolEntryFactory
     {
         /// <inheritdoc />
-        public SilentProtocolEntry Create(string suspect, string entry, string timeStamp)
+        public SilentProtocolEntry Create(string suspect, string entry, string timeStamp, string? reporter)
         {
             if (string.IsNullOrWhiteSpace(suspect))
             {
@@ -23,7 +23,7 @@ namespace Mesi.Io.SilentProtocol.Domain
                 throw new ArgumentException("Timestamp may not be null or whitespace for a new silent protocol entry");
             }
 
-            return new(Guid.NewGuid().ToString(), suspect, entry, timeStamp, DateTime.UtcNow);
+            return new(Guid.NewGuid().ToString(), suspect, entry, timeStamp, DateTime.UtcNow, reporter);
         }
     }
 }

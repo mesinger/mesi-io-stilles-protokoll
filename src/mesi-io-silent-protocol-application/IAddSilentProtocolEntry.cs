@@ -16,5 +16,5 @@ namespace Mesi.Io.SilentProtocol.Application
         Task<SilentProtocolEntry?> Add(AddSilentProtocolEntryRequest data);
     }
 
-    public record AddSilentProtocolEntryRequest(string Suspect, string Entry, string TimeStamp);
+    public record AddSilentProtocolEntryRequest(string Suspect, string Entry, string TimeStamp, string Reporter);
 }

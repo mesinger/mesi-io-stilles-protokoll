@@ -10,17 +10,20 @@
 
     <div class="container">
         <div class="row mb-2">
+            <div class="col-2 test-start">
+                Informant
+            </div>
             <div class="col-2 text-start">
                 Beschuldigter
             </div>
-            <div class="col-6 text-start">
+            <div class="col-4 text-start">
                 Eintrag
             </div>
             <div class="col-2 text-start">
                 Zeitpunkt
             </div>
             <div class="col-2">
-                
+
             </div>
         </div>
 
@@ -32,9 +35,12 @@
         {
             <div class="row mb-1 p-1 @(count++ % 2 == 0 ? "bg-light" : "")">
                 <div class="col-2 text-start">
+                    @entry.Reporter
+                </div>
+                <div class="col-2 text-start">
                     @entry.Suspect
                 </div>
-                <div class="col-6 text-start">
+                <div class="col-4 text-start">
                     @entry.Entry
                 </div>
                 <div class="col-2 text-start">

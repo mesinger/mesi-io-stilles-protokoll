@@ -8,7 +8,8 @@
         /// <param name="suspect"></param>
         /// <param name="entry"></param>
         /// <param name="timeStamp"></param>
+        /// <param name="reporter"></param>
         /// <returns></returns>
-        SilentProtocolEntry Create(string suspect, string entry, string timeStamp);
+        SilentProtocolEntry Create(string suspect, string entry, string timeStamp, string? reporter);
     }
 }
