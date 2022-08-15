@@ -90,6 +90,18 @@ namespace Mesi.Io.SilentProtocol.WebApp
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+            
+            if (!env.IsDevelopment())
+            {
+                // this shouldn't be necessary as the scheme should be taken from the forwarded headers, but on aws this does not work ...
+                app.Use((context, next) =>
+                {
+                    context.Request.Scheme = "https";
+                    return next();
+                });
+                
+                app.UseForwardedHeaders();
+            }
 
             app.UseRouting();
 
