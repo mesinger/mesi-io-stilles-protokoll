@@ -70,8 +70,9 @@ namespace Mesi.Io.SilentProtocol.WebApp
 
             services.AddHttpClient();
             services.AddHttpContextAccessor();
+            services.AddScoped<IRequestContext, RequestContext>();
             
-            services.AddScoped<ISilentProtocolEntryRepository, DapperSilentProtocolEntryRepository>();
+            services.AddScoped<ISilentProtocolEntryRepository, AuditLogProxyDapperSilentProtocolEntryRepository>();
             services.AddScoped<ISilentProtocolEntryFactory, SilentProtocolEntryFactory>();
 
             services.AddScoped<IGetSilentProtocolEntriesPaged, SilentProtocolApplicationService>();

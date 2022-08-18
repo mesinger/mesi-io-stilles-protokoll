@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Mesi.Io.SilentProtocol.Application;
 using Mesi.Io.SilentProtocol.Options;
-using Mesi.Io.SilentProtocol.WebApp.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -19,14 +16,14 @@ namespace Mesi.Io.SilentProtocol.WebApp.Pages
     {
         private readonly IAddSilentProtocolEntry _addSilentProtocolEntry;
         private readonly HttpClient _httpClient;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IRequestContext _requestContext;
         private readonly DiscordOptions _discord;
 
-        public NewModel(IAddSilentProtocolEntry addSilentProtocolEntry, HttpClient httpClient, IHttpContextAccessor httpContextAccessor, IOptions<DiscordOptions> discord)
+        public NewModel(IAddSilentProtocolEntry addSilentProtocolEntry, HttpClient httpClient, IRequestContext requestContext, IOptions<DiscordOptions> discord)
         {
             _addSilentProtocolEntry = addSilentProtocolEntry;
             _httpClient = httpClient;
-            _httpContextAccessor = httpContextAccessor;
+            _requestContext = requestContext;
             _discord = discord.Value;
         }
         
@@ -59,13 +56,7 @@ namespace Mesi.Io.SilentProtocol.WebApp.Pages
                 return Page();
             }
 
-            var reporter = _httpContextAccessor.HttpContext.GetUserName();
-            if (reporter is null)
-            {
-                return Unauthorized();
-            }
-
-            var createdEntry = await _addSilentProtocolEntry.Add(new(Suspect, Entry, TimeStamp, reporter));
+            var createdEntry = await _addSilentProtocolEntry.Add(new(Suspect, Entry, TimeStamp, _requestContext.User().Name));
 
             if (createdEntry == null)
             {

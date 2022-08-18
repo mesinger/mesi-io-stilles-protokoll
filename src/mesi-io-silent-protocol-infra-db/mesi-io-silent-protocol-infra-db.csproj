@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\mesi-io-silent-protocol-application\mesi-io-silent-protocol-application.csproj" />
       <ProjectReference Include="..\mesi-io-silent-protocol-domain\mesi-io-silent-protocol-domain.csproj" />
     </ItemGroup>
 
